@@ -47,35 +47,40 @@ const screens: Record<string, ScreenData> = {
       'We’ve had this talk before.',
       'I don’t want to keep repeating it.'
     ],
+    buttons: [{ text: 'Next', action: 'activate:thats_why' }]
+  },
+  thats_why: {
+    id: 'thats_why',
+    lines: ['thats why...'],
     buttons: [{ text: 'Next', action: 'activate:choice' }]
   },
   choice: {
     id: 'choice',
-    lines: ['Just be honest with me.'],
+    lines: [
+      'Make a decision. Be honest with me.',
+      'Your actions don’t reflect what you chose last time.'
+    ],
     buttons: [
-      { text: 'Try again properly', action: 'branch:try_again' },
+      { text: 'Try one last time', action: 'branch:try_again' },
       { text: 'Let it go', action: 'branch:let_go' }
     ]
   },
   try_again_branch: {
     id: 'try_again_branch',
-    lines: [
-      'We can try again, slowly.',
-      'Just tell me honestly on Pinterest how you feel.'
-    ],
+    lines: ['Then this is really the last time. It needs to be different.'],
     buttons: [{ text: 'Next', action: 'activate:final' }]
   },
   let_go_branch: {
     id: 'let_go_branch',
-    lines: [
-      'If that’s what feels right, it’s okay.',
-      'Just tell me honestly on Pinterest how you feel.'
-    ],
+    lines: ['If you want to let go, I’ll respect your decision.'],
     buttons: [{ text: 'Next', action: 'activate:final' }]
   },
   final: {
     id: 'final',
-    lines: ['I’ll understand, whatever you decide.'],
+    lines: [
+      'I’ll understand, whatever you decide.',
+      'tell me on pinterest what did you choose'
+    ],
     buttons: [{ text: 'Done', action: 'finalize' }]
   }
 };
@@ -155,12 +160,12 @@ function transitionTo(screenId: string, pushToHistory: boolean = true) {
     currentActive.classList.remove('active');
     setTimeout(() => {
       currentActive.remove();
-    }, 500);
+    }, 800);
   }
 
   setTimeout(() => {
     renderScreen(screenId, pushToHistory);
-  }, 500);
+  }, 800);
 }
 
 function handleAction(action: string | (() => void)) {
@@ -200,7 +205,7 @@ function handleAction(action: string | (() => void)) {
           document.getElementById('root')?.appendChild(resetScreen);
           
           requestAnimationFrame(() => {
-            resetScreen.style.transition = 'opacity 1s ease-in-out';
+            resetScreen.style.transition = 'opacity 1.5s ease-in-out';
             resetScreen.style.opacity = '1';
           });
 
@@ -209,9 +214,9 @@ function handleAction(action: string | (() => void)) {
             resetScreen.style.opacity = '0';
             setTimeout(() => {
               window.location.reload();
-            }, 1000);
+            }, 1500);
           }, 3000);
-        }, 500);
+        }, 800);
       }
       break;
   }
