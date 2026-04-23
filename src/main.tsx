@@ -51,7 +51,7 @@ const screens: Record<string, ScreenData> = {
   },
   choice: {
     id: 'choice',
-    lines: ['Take your time. Just be honest with me this time.'],
+    lines: ['Just be honest with me.'],
     buttons: [
       { text: 'Try again properly', action: 'branch:try_again' },
       { text: 'Let it go', action: 'branch:let_go' }
