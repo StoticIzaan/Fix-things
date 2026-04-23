@@ -58,7 +58,7 @@ const screens: Record<string, ScreenData> = {
     id: 'choice',
     lines: [
       'Make a decision. Be honest with me.',
-      'Your actions don’t reflect what you chose last time.'
+      'Your actions haven’t reflected the choice you made last time.'
     ],
     buttons: [
       { text: 'Try one last time', action: 'branch:try_again' },
@@ -79,7 +79,7 @@ const screens: Record<string, ScreenData> = {
     id: 'final',
     lines: [
       'I’ll understand, whatever you decide.',
-      'tell me on pinterest what did you choose'
+      'Tell me on Pinterest what you chose.'
     ],
     buttons: [{ text: 'Done', action: 'finalize' }]
   }
