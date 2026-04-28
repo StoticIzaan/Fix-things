@@ -1,12 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Helvetica Neue", Helvetica, Arial, "Inter", system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Inter", sans-serif;
 }
 
 :root {
-  background-color: #f8f8f8;
-  color: #121212;
+  background-color: #f5f5f4;
+  color: #292524;
   overflow: hidden;
 }
 
@@ -38,94 +40,158 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 60px;
+  padding: 40px;
   opacity: 0;
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(10px);
+  transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
 }
 
 .screen.active {
   opacity: 1;
+  transform: translateY(0);
   pointer-events: auto;
 }
 
 .text-container {
-  max-width: 600px;
-  margin-bottom: 40px;
+  max-width: 500px;
+  margin-bottom: 32px;
 }
 
 .line {
-  font-size: 22px;
-  font-weight: 300;
+  font-size: 19px;
+  font-weight: 400;
   margin: 0 0 12px 0;
   line-height: 1.6;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.01em;
+  color: #44403c;
 }
 
 .btn-container {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
   margin-top: 24px;
 }
 
 .btn {
   appearance: none;
-  background: transparent;
-  border: 1px solid #121212;
-  padding: 14px 36px;
-  font-size: 14px;
+  background: #292524;
+  border: 1px solid #292524;
+  color: #f5f5f4;
+  padding: 14px 40px;
+  font-size: 13px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  font-family: var(--font-sans);
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  min-width: 180px;
+  transition: all 0.3s ease;
+  min-width: 200px;
+  border-radius: 8px;
 }
 
 .btn:hover {
-  background: #121212;
-  color: #f8f8f8;
+  background: #44403c;
+  color: #f5f5f4;
+  border-color: #44403c;
+  transform: translateY(-1px);
 }
 
 .back-arrow {
   position: absolute;
-  top: 60px;
-  right: 60px;
+  top: 40px;
+  right: 40px;
   background: transparent;
   border: none;
-  color: #121212;
-  font-size: 24px;
+  color: #292524;
+  font-size: 20px;
   cursor: pointer;
-  opacity: 0.3;
-  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.8;
+  transition: all 0.3s ease;
   padding: 10px;
   z-index: 10;
 }
 
 .back-arrow:hover {
   opacity: 1;
+  transform: translateX(-4px);
 }
 
-/* Editorial decorations */
 .editorial-frame {
   position: absolute;
   top: 40px;
   left: 40px;
   right: 40px;
   bottom: 40px;
-  border: 1px solid rgba(0,0,0,0.05);
+  border: 1px solid rgba(41, 37, 36, 0.05);
   pointer-events: none;
   z-index: 5;
+  border-radius: 4px;
 }
 
 .editorial-label {
   position: absolute;
-  top: 50px;
-  left: 50px;
-  font-size: 10px;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  opacity: 0.3;
+  letter-spacing: 0.3em;
+  color: #292524;
+  opacity: 0.1;
   pointer-events: none;
   z-index: 5;
+  transition: all 0.3s ease;
+}
+
+.editorial-label:hover {
+  opacity: 0.4;
+  letter-spacing: 0.4em;
+}
+
+.sparkle-egg {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  font-size: 14px;
+  opacity: 0.15;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+  z-index: 100;
+  padding: 10px;
+}
+
+.sparkle-egg:hover {
+  opacity: 0.8;
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+}
+
+.curiosity-msg {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: var(--font-sans);
+  color: #292524;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.02);
+  z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.curiosity-msg.active {
+  opacity: 1;
+  top: 120px;
 }
