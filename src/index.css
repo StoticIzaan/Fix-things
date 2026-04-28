@@ -157,8 +157,8 @@ body {
   position: absolute;
   top: 40px;
   left: 40px;
-  font-size: 14px;
-  opacity: 0.15;
+  font-size: 20px;
+  opacity: 0.6;
   cursor: pointer;
   transition: all 0.3s ease;
   user-select: none;
@@ -167,9 +167,9 @@ body {
 }
 
 .sparkle-egg:hover {
-  opacity: 0.8;
-  transform: scale(1.2);
-  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+  opacity: 1;
+  transform: scale(1.3);
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
 }
 
 .curiosity-msg {
