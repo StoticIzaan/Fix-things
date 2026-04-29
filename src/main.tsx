@@ -114,7 +114,7 @@ const AudioEngine = {
     }
   },
 
-  play(freq: number, type: OscillatorType, duration: number, volume: number) {
+  play(freq: number, type: OscillatorType, duration: number, volume: number, endFreq?: number) {
     if (!this.ctx) return;
     if (this.ctx.state === 'suspended') this.ctx.resume();
 
@@ -123,8 +123,12 @@ const AudioEngine = {
 
     osc.type = type;
     osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+    if (endFreq) {
+      osc.frequency.exponentialRampToValueAtTime(endFreq, this.ctx.currentTime + duration);
+    }
     
-    gain.gain.setValueAtTime(volume, this.ctx.currentTime);
+    gain.gain.setValueAtTime(0, this.ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(volume, this.ctx.currentTime + 0.01);
     gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
 
     osc.connect(gain);
@@ -135,11 +139,15 @@ const AudioEngine = {
   },
 
   click() {
-    this.play(800, 'triangle', 0.1, 0.2);
+    this.play(1200, 'sine', 0.15, 0.05);
   },
 
   transition() {
-    this.play(400, 'triangle', 0.3, 0.1);
+    // Elegant two-note chime
+    this.play(600, 'sine', 0.4, 0.03);
+    setTimeout(() => {
+      this.play(800, 'sine', 0.5, 0.04);
+    }, 150);
   }
 };
 
@@ -152,8 +160,6 @@ let hasNavigatedBack: boolean = false;
 function renderScreen(screenId: string, pushToHistory: boolean = true) {
   const root = document.getElementById('root');
   if (!root) return;
-
-  AudioEngine.transition();
 
   const data = screens[screenId];
   if (!data) return;
@@ -170,23 +176,31 @@ function renderScreen(screenId: string, pushToHistory: boolean = true) {
 
   const textContainer = document.createElement('div');
   textContainer.className = 'text-container';
-  data.lines.forEach(line => {
+  data.lines.forEach((line, index) => {
     const p = document.createElement('p');
     p.className = 'line';
     p.textContent = line;
+    // Stagger text lines
+    p.style.transitionDelay = `${index * 0.15}s`;
     textContainer.appendChild(p);
   });
   screenEl.appendChild(textContainer);
 
   const btnContainer = document.createElement('div');
   btnContainer.className = 'btn-container';
+  // Buttons appear after text lines
+  btnContainer.style.transitionDelay = `${data.lines.length * 0.15 + 0.2}s`;
 
   // Add Back arrow if history exists and not on final screen
   if (navigationHistory.length > 0 && !screenId.startsWith('final')) {
     const backArrow = document.createElement('button');
     backArrow.className = 'back-arrow';
     backArrow.innerHTML = '←';
-    backArrow.onclick = () => goBack();
+    backArrow.onclick = () => {
+      AudioEngine.init();
+      AudioEngine.click();
+      goBack();
+    };
     screenEl.appendChild(backArrow);
   }
 
@@ -205,11 +219,11 @@ function renderScreen(screenId: string, pushToHistory: boolean = true) {
 
   root.appendChild(screenEl);
 
-  // Show curiosity message if they went back
-  if (hasNavigatedBack) {
+  // Show curiosity message if they went back AND there are two options
+  if (hasNavigatedBack && data.buttons.length === 2) {
     showCuriosityMsg();
-    hasNavigatedBack = false;
   }
+  hasNavigatedBack = false;
 
   // Trigger fade in on next frame
   requestAnimationFrame(() => {
@@ -244,6 +258,7 @@ function goBack() {
 }
 
 function transitionTo(screenId: string, pushToHistory: boolean = true) {
+  AudioEngine.transition();
   const currentActive = document.querySelector('.screen.active');
   if (currentActive) {
     currentActive.classList.remove('active');
@@ -334,11 +349,7 @@ function init() {
     // Add decorative elements once
     const frame = document.createElement('div');
     frame.className = 'editorial-frame';
-    
-    const label = document.createElement('div');
-    label.className = 'editorial-label';
-    label.textContent = 'Mood';
-    
+
     // Obvious sparkle egg
     const sparkle = document.createElement('div');
     sparkle.className = 'sparkle-egg';
@@ -346,12 +357,12 @@ function init() {
     sparkle.onclick = (e) => {
       e.stopPropagation();
       AudioEngine.init();
-      AudioEngine.play(1200, 'sine', 0.2, 0.1);
+      // "Magic" sweeping chime
+      AudioEngine.play(1000, 'sine', 0.6, 0.08, 2200);
       showSecretMsg('Stay kind to yourself. You deserve it. 🤍');
     };
-    
+
     root.appendChild(frame);
-    root.appendChild(label);
     root.appendChild(sparkle);
   }
   renderScreen('opening');
